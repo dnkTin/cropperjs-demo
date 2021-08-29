@@ -23,13 +23,28 @@ $( function() {
       }
       OFReader.readAsDataURL(file);
     }
+  });
+
+  $('#crop-btn').click(function () {
+    canvas = cropper.getCroppedCanvas()
+    canvas.toBlob(function (blob) {
+      const reader = new FileReader()
+      reader.readAsDataURL(blob)
+      reader.onloadend = function () {
+        console.log(reader.result)
+        $('#cropped-img').attr('src', reader.result)
+      }
+    })
   })
 } );
 
 function initCropper () {
+  // SHOW KHI MO MODAL
   const image = document.getElementById('image');
   if (cropper) {
+    //khi dong modal
     cropper.destroy();
+    cropper = null;
   }
   cropper = new Cropper(image, {
     aspectRatio: 16 / 9,
